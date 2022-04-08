@@ -1,5 +1,6 @@
 # from urllib import response
-from cgitb import html
+from os import sep
+# from cgitb import html
 import requests
 from bs4 import BeautifulSoup
 
@@ -23,4 +24,4 @@ purchase_date = opinion.select_one('span.user-post__published > time:nth-child(2
 
 
 
-print(recommendation, stars, content, type(useless), type(useful), type(date_time), type(purchase_date) )
+print(recommendation, stars, content, type(useless), type(useful), type(date_time), type(purchase_date))
