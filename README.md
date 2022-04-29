@@ -10,8 +10,8 @@
 |rekomendacja|span.user-post__author-recomendation > em|recommendation|str|  
 |liczba gwiazdek|span.user-post__score-count|stars|str| 
 |treść opinii|div.user-post__text|content|str| 
-|lista zalet|div.review-feature__item:has (>div[class $= "positives"]|pros|| 
-|lista wad|div.review-feature__item:has (>div[class $= "negatives"]|cons|| 
+|lista zalet|div[class$=\"positives\"]~ div.review-feature__item|pros|list| 
+|lista wad|div[class$=\"negatives\"]~ div.review-feature__item|cons|list| 
 |dla ilu osób przydatna|span[id^="votes-yes"]|useful|str| 
 |dla ilu osób nieprzydatna|span[id^="votes-no"]|useless|str|
 |data wystawienia opinii|span.user-post__published > time:nth-child(1)["datetime"]|publish_date|str| 
