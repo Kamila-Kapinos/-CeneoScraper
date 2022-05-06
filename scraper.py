@@ -1,12 +1,6 @@
-# from urllib import response
-# from os import sep
-# from cgitb import html
-# from inspect import Attribute
-# import selectors
 import requests
 import json
 from bs4 import BeautifulSoup
-# from soupsieve import select
 
 def get_item(ancestor, selector, attribute=None, return_list=False):
     try:
@@ -14,7 +8,7 @@ def get_item(ancestor, selector, attribute=None, return_list=False):
             return [item.get_text().strip() for item in ancestor.select(selector)]
         if attribute:
             return ancestor.select_one(selector)[attribute]
-        return ancestor.select_one(selector).get_text().strip
+        return ancestor.select_one(selector).get_text().strip()
     except (AttributeError, TypeError):
         return None
 
@@ -29,35 +23,29 @@ selectors = {
     "purchase_date": ["span.user-post__published > time:nth-child(2)", "datetime"],
     "pros": ["div[class$=positives]~ div.review-feature__item", None, True],
     "cons": ["div[class$=negatives]~ div.review-feature__item", None, True]
-
 }
 
 product_id = input("Podaj identyfikator produktu: ")
-
-url = f"https://www.ceneo.pl/{product_id}#tab=reviews"  # kod ma być pobierany od uzytkownika
+url = f"https://www.ceneo.pl/{product_id}#tab=reviews"
 all_opinions = []
-
-
 while(url):
     response = requests.get(url)
-    page = BeautifulSoup(response.text, "html.parser")
+    page = BeautifulSoup(response.text, 'html.parser')
     opinions = page.select("div.js_product-review")
-    
     for opinion in opinions:
         
         single_opinion = {
-            key: get_item(opinion, *value) #* wypakowuje wartości
-            for key, value in selectors.items()
+            key: get_item(opinion, *value)
+                for key, value in selectors.items()
         }
-
         single_opinion["opinion_id"] = opinion["data-entry-id"]
         all_opinions.append(single_opinion)
 
-    try:
+    try:    
         url = "https://www.ceneo.pl"+get_item(page, "a.pagination__next", "href")
     except TypeError:
         url = None
 
-with open("opinions/" + product_id + ".json", "w", encoding="UTF-8") as jf:
+with open(f"opinions/{product_id}.json", "w", encoding="UTF-8") as jf:
     json.dump(all_opinions, jf, indent=4, ensure_ascii=False)
 
